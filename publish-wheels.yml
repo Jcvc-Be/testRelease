@@ -21,8 +21,7 @@ jobs:
       - name: Download artifact from private repo
         uses: dawidd6/action-download-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # The 'repository_dispatch' payload from the private repo tells us which run to fetch
+          github_token: ${{ secrets.CROSS_REPO_TOKEN }}   # ← changed
           repo: ${{ github.event.client_payload.repo }}
           run_id: ${{ github.event.client_payload.run_id }}
           name: ${{ github.event.client_payload.artifact_name }}
