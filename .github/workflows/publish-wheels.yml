@@ -29,11 +29,23 @@ jobs:
 
       - name: Generate Package Index
         run: |
-          echo '<!DOCTYPE html><html><head><title>testRelease</title></head><body><h1>beHydra Wheels</h1>' > index.html
-          for wheel in dist/*.whl; do
+          # Create project directory (normalized name)
+          mkdir -p behydra
+          
+          # Move all wheels into the project directory
+          mv dist/*.whl behydra/
+          
+          # Create the project page listing all wheels
+          echo '<!DOCTYPE html><html><head><title>beHydra</title></head><body><h1>beHydra Wheels</h1>' > behydra/index.html
+          for wheel in behydra/*.whl; do
             filename=$(basename "$wheel")
-            echo "<a href=\"$filename\">$filename</a><br>" >> index.html
+            echo "<a href=\"$filename\">$filename</a><br>" >> behydra/index.html
           done
+          echo '</body></html>' >> behydra/index.html
+          
+          # Create the root index page listing the project
+          echo '<!DOCTYPE html><html><head><title>Simple Index</title></head><body>' > index.html
+          echo '<a href="behydra/">behydra</a><br>' >> index.html
           echo '</body></html>' >> index.html
 
       - name: Setup Pages
